@@ -32,6 +32,24 @@ public class AppServlet extends HttpServlet{
             RequestDispatcher rd = req.getRequestDispatcher("listaCliente.jsp");
             rd.forward(req, resp);
         }
+        if (acao.equals("excluir")) {
+            ClienteDao clienteDao = new ClienteDao();
+            Integer id = Integer.parseInt(req.getParameter("id"));
+            Cliente clienteExcluido = clienteDao.getClienteById(id);
+            clienteDao.delete(clienteExcluido);
+            
+            RequestDispatcher rd = req.getRequestDispatcher("servlet?acao=listar");
+            rd.forward(req, resp);
+        }
+        if (acao.equals ("editar")) {
+            String idAsString = req.getParameter("id");
+            Integer id = Integer.parseInt(idAsString);
+            ClienteDao clienteDao = new ClienteDao();
+            Cliente clienteParaEditar = clienteDao.getClienteById(id);
+            req.setAttribute("Cliente", clienteParaEditar);
+            RequestDispatcher rd = req.getRequestDispatcher("editCliente.jsp");
+            rd.forward(req, resp);
+        }
     }
 
     @Override

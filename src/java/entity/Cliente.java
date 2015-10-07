@@ -10,13 +10,15 @@ package entity;
  * @author brunameyer
  */
 public class Cliente {
-    private int idCliente;
+    private Integer idCliente;
+    private String razaoSocial;
+    private Integer cnpj;
 
-    public int getIdCliente() {
+    public Integer getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(int idCliente) {
+    public void setIdCliente(Integer idCliente) {
         this.idCliente = idCliente;
     }
 
@@ -35,7 +37,5 @@ public class Cliente {
     public void setCnpj(Integer cnpj) {
         this.cnpj = cnpj;
     }
-    private String razaoSocial;
-    private Integer cnpj;
-    
+      
 }
