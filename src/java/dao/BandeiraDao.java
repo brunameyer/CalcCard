@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,6 +21,7 @@ import java.sql.SQLException;
  */
 public class BandeiraDao {
     
+        
     @Deprecated
 public boolean insert(Bandeira bandeira) {
         Connection c = this.getConnection();
@@ -95,9 +98,9 @@ public boolean insert(Bandeira bandeira) {
         return false;
     }
     
-    public Cliente getBandeiraById(int id) {
+    public Bandeira getBandeiraById(int id) {
         Connection c = this.getConnection();
-        Cliente cliente = null;
+        Bandeira bandeira = null;
         try {
             PreparedStatement ps = c.prepareStatement("SELECT id, "
                     + "id, descricao "
@@ -106,7 +109,7 @@ public boolean insert(Bandeira bandeira) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
 
-                Bandeira bandeira = new Bandeira();
+                bandeira = new Bandeira();
                 bandeira.setId(rs.getInt("id"));
                 bandeira.setDescricao(rs.getString("descricao"));
                 
@@ -114,7 +117,7 @@ public boolean insert(Bandeira bandeira) {
             }
             rs.close();
             ps.close();
-            return cliente;
+            return bandeira;
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
@@ -125,6 +128,45 @@ public boolean insert(Bandeira bandeira) {
             }
         }
         return null;
+    }
+    
+    public List<Bandeira> listarBandeiras() {
+        List<Bandeira> lista = new ArrayList<Bandeira>();
+        Connection I = this.getConnection();
+        try {
+            PreparedStatement ps
+                    = I.prepareStatement("SELECT id, descricao "
+                            + "FROM bandeira");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Bandeira objBandeira = new Bandeira();
+                objBandeira.setId(rs.getInt("id"));
+                objBandeira.setDescricao(rs.getString("descricao"));
+
+                lista.add(objBandeira);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                I.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return lista;
+    }
+    
+    public void salvar(Bandeira bandeira) {
+        if (bandeira.getId() == null) {
+            insert(bandeira);
+        } else {
+            update(bandeira);
+        }
+
     }
 
     private Connection getConnection() {
