@@ -11,12 +11,15 @@
     </session-config>
     
     <servlet>
-        <servlet-name>NaoSeiOQueDigitar</servlet-name>
+        <servlet-name>Index</servlet-name>
         <servlet-class>servlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>NaoSeiOQueDigitar</servlet-name>
-        <url-pattern>servlet.AppServlet</url-pattern>
+        <servlet-name>Index</servlet-name>
+        <url-pattern>/servlet.AppServlet</url-pattern>
     </servlet-mapping>
-            
+    </servlet>                   
 </web-app>
+
+
+
