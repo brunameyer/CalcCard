@@ -4,6 +4,7 @@
     Author     : felipe_tubandt
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,14 +13,13 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%-- Colocar no editCartao.jsp --%>             
-        <form action="servlet">
-            Descricao: <input type="text" name="txtDescricao" value="${bandeira.descricao}"><br />
-            <input type="submit" value="Submeter" />
+        <c:forEach items="${lista}" var="umCartao">
+            ${umCartao.descricao} - <a href="servlet?acao=excluirCartao&id=${umCartao.id}"> Excluir</a> - 
+            <a href="servlet?acao=editarCartao&id=${umCartao.id}">Editar</a>
+            <br/>            
+        </c:forEach>
             
-            
-            
-            
-        </form>
+            <a href="servlet?acao=novoCartao">Novo</a>
+        
     </body>
 </html>

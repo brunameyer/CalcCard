@@ -1,41 +1,94 @@
 /*
+
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dao;
 
-import entity.Bandeira;
+import entity.Cartao;
+import entity.Cartao;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
- * @author VDISOO0219
+ * @author brunameyer
  */
-public class BandeiraDao {
+public class CartaoDao {
     
-        
     @Deprecated
-public boolean insert(Bandeira bandeira) {
+    public boolean insert (Cartao cartao) {
+        Connection c = this.getConnection();
+        try { 
+            PreparedStatement ps
+                    = c.prepareStatement("INSERT INTO Cartao"
+                    + "(taxaDebito, taxaCredito)"
+                    + "Values (?) (?)");
+            ps.setFloat(1, cartao.getTaxaCredito());
+            ps.setFloat(2, cartao.getTaxaDebito());
+            
+            ps.execute();
+            ps.close();         
+        return true;
+        
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } 
+        }
+            return false;
+    }
+    
+    @Deprecated
+    public boolean update (Cartao cartao) {
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps
-                    = c.prepareStatement("INSERT INTO Bandeira "
-                            + "( descricao )  "
-                            + "VALUES ( ? )");
-            ps.setString(1, bandeira.getDescricao());
+            PreparedStatement ps = c.prepareStatement("UPDATE Cartao"
+            + "SET descricao = ?"
+            + "WHERE id = ?");
+            
+            ps.setFloat(1, cartao.getTaxaCredito());
+            ps.setFloat(2, cartao.getTaxaDebito());
+            ps.execute();
+            
+            ps.close();
+            return true;
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return false;
+    }
+    
+    @Deprecated
+    public boolean delete (Cartao cartao) {
+        Connection c = this.getConnection();
+        try {
+            PreparedStatement ps = c.prepareStatement("DELETE FROM Cartao"
+            + "WHERE id=?");
+            
+            ps.setFloat(1,cartao.getTaxaCredito());
+            ps.setFloat(2,cartao.getTaxaDebito());
             
             ps.execute();
             ps.close();
             return true;
-
-        } catch (SQLException ex) {
+        } catch (SQLException ex)  {
             ex.printStackTrace();
         } finally {
             try {
@@ -45,78 +98,33 @@ public boolean insert(Bandeira bandeira) {
             }
         }
         return false;
-    }
-
-@Deprecated
-    public boolean update(Bandeira bandeira) {
-        Connection c = this.getConnection();
-        try {
-            PreparedStatement ps = c.prepareStatement("UPDATE Bandeira "
-                    + "SET descricao = ? "
-                    + " WHERE id = ?");
-            ps.setString(1, bandeira.getDescricao());
-            ps.execute();
-
-            ps.close();
-            return true;
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return false;
+                    
     }
     
-    public boolean delete(Bandeira bandeira) {
+    public Cartao getCartaoById (Integer idCartao) {
         Connection c = this.getConnection();
+        Cartao cartao = null;
+        
         try {
-            PreparedStatement ps
-                    = c.prepareStatement("DELETE FROM Bandeira "
-                            + "WHERE id = ?");
-            ps.setInt(1, bandeira.getId());
-
-            ps.execute();
-
-            ps.close();
-            return true;
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return false;
-    }
-    
-    public Bandeira getBandeiraById(int id) {
-        Connection c = this.getConnection();
-        Bandeira bandeira = null;
-        try {
-            PreparedStatement ps = c.prepareStatement("SELECT id, "
-                    + "id, descricao "
-                    + "FROM Bandeira WHERE id = ?");
-            ps.setInt(1, id);
+            PreparedStatement ps = c.prepareStatement("SELECT id,"
+            + "id, taxaDebito, taxaCredito"
+            + "FROM Cartao WHERE id = ?");
+            
+            ps.setInt(1, cartao.getIdCartao());
+            
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-
-                bandeira = new Bandeira();
-                bandeira.setId(rs.getInt("id"));
-                bandeira.setDescricao(rs.getString("descricao"));
                 
-
-            }
+                cartao = new Cartao();
+                cartao.setIdCartao(rs.getInt("idCartao"));
+                cartao.setTaxaCredito(rs.getFloat("taxaCredito"));
+                cartao.setTaxaDebito(rs.getFloat("taxaDebito"));
+                
+                }
+            
             rs.close();
             ps.close();
-            return bandeira;
+            return cartao;
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
@@ -129,21 +137,22 @@ public boolean insert(Bandeira bandeira) {
         return null;
     }
     
-    public List<Bandeira> listarBandeiras() {
-        List<Bandeira> lista = new ArrayList<Bandeira>();
-        Connection I = this.getConnection();
+    public List<Cartao> listarCartaos() {
+        List<Cartao> lista = new ArrayList<Cartao>();
+        Connection c = this.getConnection();
         try {
             PreparedStatement ps
-                    = I.prepareStatement("SELECT id, descricao "
-                            + "FROM bandeira");
+                    = c.prepareStatement("SELECT idCartao, taxaDebito, taxaCredito "
+                            + "FROM Cartao");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
 
-                Bandeira objBandeira = new Bandeira();
-                objBandeira.setId(rs.getInt("id"));
-                objBandeira.setDescricao(rs.getString("descricao"));
+                Cartao objCartao = new Cartao();
+                objCartao.setIdCartao(rs.getInt("id"));
+                objCartao.setTaxaCredito(rs.getFloat("taxaCredito"));
+                objCartao.setTaxaDebito(rs.getFloat("taxaDebito"));
 
-                lista.add(objBandeira);
+                lista.add(objCartao);
             }
             rs.close();
             ps.close();
@@ -151,7 +160,7 @@ public boolean insert(Bandeira bandeira) {
             ex.printStackTrace();
         } finally {
             try {
-                I.close();
+                c.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -159,18 +168,15 @@ public boolean insert(Bandeira bandeira) {
         return lista;
     }
     
-    public void salvar(Bandeira bandeira) {
-        if (bandeira.getId() == null) {
-            insert(bandeira);
+    public void salvar (Cartao cartao) {
+        if (cartao.getIdCartao() == null) {
+            insert(cartao);
         } else {
-            update(bandeira);
+            update(cartao);
         }
-
     }
-
+ 
     private Connection getConnection() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-
 }
