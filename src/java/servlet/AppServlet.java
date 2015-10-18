@@ -29,7 +29,7 @@ public class AppServlet extends HttpServlet{
         if (acao.equals("listar")) {
             List<Cartao> listaCartoes;
             CartaoDao cartaoDao = new CartaoDao();
-            listaCartoes = cartaoDao.listarCartaos();
+            listaCartoes = cartaoDao.listarCartoes();
             req.setAttribute("listinha", listaCartoes);
             RequestDispatcher rd = req.getRequestDispatcher("listCartao.jsp");
             rd.forward(req, resp);

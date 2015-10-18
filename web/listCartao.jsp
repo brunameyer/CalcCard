@@ -14,7 +14,9 @@
     </head>
     <body>
         <c:forEach items="${lista}" var="umCartao">
-            ${umCartao.descricao} - <a href="servlet?acao=excluirCartao&id=${umCartao.id}"> Excluir</a> - 
+            ${umCartao.taxaCredito} - <a href="servlet?acao=excluirCartao&id=${umCartao.id}"> Excluir</a> - 
+            <a href="servlet?acao=editarCartao&id=${umCartao.id}">Editar</a>
+            ${umCartao.taxaDebito} - <a href="servlet?acao=excluirCartao&id=${umCartao.id}"> Excluir</a> - 
             <a href="servlet?acao=editarCartao&id=${umCartao.id}">Editar</a>
             <br/>            
         </c:forEach>

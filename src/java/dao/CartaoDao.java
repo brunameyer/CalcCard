@@ -9,6 +9,7 @@ package dao;
 import entity.Cartao;
 import entity.Cartao;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,9 +27,9 @@ public class CartaoDao {
         Connection c = this.getConnection();
         try { 
             PreparedStatement ps
-                    = c.prepareStatement("INSERT INTO Cartao"
+                    = c.prepareStatement("INSERT INTO Cartao "
                     + "(taxaDebito, taxaCredito)"
-                    + "Values (?) (?)");
+                    + "Values (?, ?)");
             ps.setFloat(1, cartao.getTaxaCredito());
             ps.setFloat(2, cartao.getTaxaDebito());
             
@@ -79,7 +80,7 @@ public class CartaoDao {
     public boolean delete (Cartao cartao) {
         Connection c = this.getConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("DELETE FROM Cartao"
+            PreparedStatement ps = c.prepareStatement("DELETE FROM Cartao "
             + "WHERE id=?");
             
             ps.setFloat(1,cartao.getTaxaCredito());
@@ -107,7 +108,7 @@ public class CartaoDao {
         
         try {
             PreparedStatement ps = c.prepareStatement("SELECT id,"
-            + "id, taxaDebito, taxaCredito"
+            + " taxaDebito, taxaCredito "
             + "FROM Cartao WHERE id = ?");
             
             ps.setInt(1, cartao.getIdCartao());
@@ -137,7 +138,7 @@ public class CartaoDao {
         return null;
     }
     
-    public List<Cartao> listarCartaos() {
+    public List<Cartao> listarCartoes() {
         List<Cartao> lista = new ArrayList<Cartao>();
         Connection c = this.getConnection();
         try {
@@ -177,6 +178,13 @@ public class CartaoDao {
     }
  
     private Connection getConnection() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection c = null;
+        try {
+            Class.forName("org.gjt.mm.mysql.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:8080/", "root", "");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return c;
     }
 }

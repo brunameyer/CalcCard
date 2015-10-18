@@ -15,7 +15,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="servlet" >            
+        <form action="servlet" >          
+            <%-- Bandeira: <input type="text" name="txtBandeira" value="${Cartao.bandeira}"><br /> --%>
             Taxa Crédito: <input type="text" name="txtTaxaCredito" value="${Cartao.taxaCredito}"><br />
             Taxa Débito: <input type="text" name="txtTaxaDebito" value="${Cartao.taxaDebito}"><br />
             

@@ -12,11 +12,11 @@
     
     <servlet>
         <servlet-name>uhauhauh</servlet-name>
-        <servlet-class>servlet</servlet-class>
+        <servlet-class>servlet.AppServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>uhauhauh</servlet-name>
-        <url-pattern>/servlet.AppServlet</url-pattern>
+        <url-pattern>/servlet</url-pattern>
     </servlet-mapping>
                        
 </web-app>
