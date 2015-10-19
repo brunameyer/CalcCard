@@ -15,6 +15,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 /**
  *
@@ -22,169 +24,55 @@ import java.util.List;
  */
 public class CartaoDao {
     
-    @Deprecated
-    public boolean insert (Cartao cartao) {
-        Connection c = this.getConnection();
-        try { 
-            PreparedStatement ps
-                    = c.prepareStatement("INSERT INTO Cartao "
-                    + "(taxaDebito, taxaCredito)"
-                    + "Values (?, ?)");
-            ps.setFloat(1, cartao.getTaxaCredito());
-            ps.setFloat(2, cartao.getTaxaDebito());
-            
-            ps.execute();
-            ps.close();         
-        return true;
+    
+     public void delete (Cartao cartao) {
         
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            } 
-        }
-            return false;
-    }
-    
-    @Deprecated
-    public boolean update (Cartao cartao) {
-        Connection c = this.getConnection();
-        try {
-            PreparedStatement ps = c.prepareStatement("UPDATE Cartao"
-            + "SET descricao = ?"
-            + "WHERE id = ?");
-            
-            ps.setFloat(1, cartao.getTaxaCredito());
-            ps.setFloat(2, cartao.getTaxaDebito());
-            ps.execute();
-            
-            ps.close();
-            return true;
-            
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return false;
-    }
-    
-    @Deprecated
-    public boolean delete (Cartao cartao) {
-        Connection c = this.getConnection();
-        try {
-            PreparedStatement ps = c.prepareStatement("DELETE FROM Cartao "
-            + "WHERE id=?");
-            
-            ps.setFloat(1,cartao.getTaxaCredito());
-            ps.setFloat(2,cartao.getTaxaDebito());
-            
-            ps.execute();
-            ps.close();
-            return true;
-        } catch (SQLException ex)  {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        
+        session.delete(cartao);
+        
+        session.getTransaction().commit();
+        session.close();
                     
     }
     
-    public Cartao getCartaoById (Integer idCartao) {
-        Connection c = this.getConnection();
-        Cartao cartao = null;
+    public void getCartaoById (Integer idCartao) {
         
-        try {
-            PreparedStatement ps = c.prepareStatement("SELECT id,"
-            + " taxaDebito, taxaCredito "
-            + "FROM Cartao WHERE id = ?");
-            
-            ps.setInt(1, cartao.getIdCartao());
-            
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                
-                cartao = new Cartao();
-                cartao.setIdCartao(rs.getInt("idCartao"));
-                cartao.setTaxaCredito(rs.getFloat("taxaCredito"));
-                cartao.setTaxaDebito(rs.getFloat("taxaDebito"));
-                
-                }
-            
-            rs.close();
-            ps.close();
-            return cartao;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return null;
+        Cartao cartao = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        
+        cartao = (Cartao) session.get(Cartao.class, idCartao);
+        
+        session.delete(idCartao);
+        
+        session.getTransaction().commit();
+        session.close();
     }
     
-    public List<Cartao> listarCartoes() {
-        List<Cartao> lista = new ArrayList<Cartao>();
-        Connection c = this.getConnection();
-        try {
-            PreparedStatement ps
-                    = c.prepareStatement("SELECT idCartao, taxaDebito, taxaCredito "
-                            + "FROM Cartao");
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-
-                Cartao objCartao = new Cartao();
-                objCartao.setIdCartao(rs.getInt("id"));
-                objCartao.setTaxaCredito(rs.getFloat("taxaCredito"));
-                objCartao.setTaxaDebito(rs.getFloat("taxaDebito"));
-
-                lista.add(objCartao);
-            }
-            rs.close();
-            ps.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                c.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+    public List<Cartao> getAll () {
+        List<Cartao> lista = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        
+        Query query  = session.createQuery("from entity.Cartao");
+        
+        lista = query.list();
+        
         return lista;
     }
     
     public void salvar (Cartao cartao) {
-        if (cartao.getIdCartao() == null) {
-            insert(cartao);
-        } else {
-            update(cartao);
-        }
+        
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        
+        session.saveOrUpdate(cartao);
+        
+        session.getTransaction().commit();
+        session.close();
     }
  
-    private Connection getConnection() {
-        Connection c = null;
-        try {
-            Class.forName("org.gjt.mm.mysql.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:8080/", "root", "");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return c;
-    }
+    
 }

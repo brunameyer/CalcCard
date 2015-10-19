@@ -5,24 +5,34 @@
  */
 package entity;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  *
  * @author brunameyer
  */
-public class Cartao {
+@Entity
+public class Cartao implements Serializable {
+    
+    @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     
     private Integer idCartao;
-    private float taxaDebito;
-    private float taxaCredito;
-    private Bandeira bandeira;
+    private Float taxaDebito;
+    private Float taxaCredito;
+    //private Bandeira bandeira;
 
-    public Bandeira getBandeira() {
-        return bandeira;
-    }
+    //public Bandeira getBandeira() {
+     ///   return bandeira;
+   // }
 
-    public void setBandeira(Bandeira bandeira) {
-        this.bandeira = bandeira;
-    }
+    //public void setBandeira(Bandeira bandeira) {
+    //    this.bandeira = bandeira;
+    //}
 
     public Integer getIdCartao() {
         return idCartao;
