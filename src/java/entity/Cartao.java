@@ -19,20 +19,10 @@ import javax.persistence.Id;
 public class Cartao implements Serializable {
     
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
-    
+    @GeneratedValue (strategy = GenerationType.AUTO)    
     private Integer idCartao;
     private Float taxaDebito;
     private Float taxaCredito;
-    //private Bandeira bandeira;
-
-    //public Bandeira getBandeira() {
-     ///   return bandeira;
-   // }
-
-    //public void setBandeira(Bandeira bandeira) {
-    //    this.bandeira = bandeira;
-    //}
 
     public Integer getIdCartao() {
         return idCartao;
@@ -42,21 +32,21 @@ public class Cartao implements Serializable {
         this.idCartao = idCartao;
     }
 
-    public float getTaxaDebito() {
+    public Float getTaxaDebito() {
         return taxaDebito;
     }
 
-    public void setTaxaDebito(float taxaDebito) {
+    public void setTaxaDebito(Float taxaDebito) {
         this.taxaDebito = taxaDebito;
     }
 
-    public float getTaxaCredito() {
+    public Float getTaxaCredito() {
         return taxaCredito;
     }
 
-    public void setTaxaCredito(float taxaCredito) {
+    public void setTaxaCredito(Float taxaCredito) {
         this.taxaCredito = taxaCredito;
     }
-    
+ 
     
 }

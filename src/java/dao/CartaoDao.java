@@ -7,13 +7,6 @@
 package dao;
 
 import entity.Cartao;
-import entity.Cartao;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -25,8 +18,7 @@ import org.hibernate.Session;
 public class CartaoDao {
     
     
-     public void delete (Cartao cartao) {
-        
+     public void delete (Cartao cartao) {        
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.getTransaction().begin();
         
@@ -37,21 +29,23 @@ public class CartaoDao {
                     
     }
     
-    public void getCartaoById (Integer idCartao) {
-        
+    public Cartao getCartaoById (Integer idCartao) {        
         Cartao cartao = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.getTransaction().begin();
         
-        cartao = (Cartao) session.get(Cartao.class, idCartao);
+        //Criteria criteria = session.createCriteria(Produto.class);
+        //criteria.add(Restrictions.like("nome", nome));
+        //lista = criteria.list();
         
-        session.delete(idCartao);
+        cartao = (Cartao) session.get(Cartao.class, idCartao);          
         
         session.getTransaction().commit();
         session.close();
+        return cartao;
     }
     
-    public List<Cartao> getAll () {
+    public List<Cartao> listarCartoes() {
         List<Cartao> lista = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.getTransaction().begin();
@@ -60,6 +54,8 @@ public class CartaoDao {
         
         lista = query.list();
         
+        session.getTransaction().commit();
+        session.close();
         return lista;
     }
     

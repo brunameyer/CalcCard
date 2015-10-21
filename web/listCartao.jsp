@@ -1,6 +1,6 @@
 <%-- 
     Document   : listCartao
-    Created on : 14/10/2015, 19:24:36
+Created on : 14/10/2015, 19:24:36
     Author     : felipe_tubandt
 --%>
 
@@ -9,15 +9,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
     <body>
         <c:forEach items="${lista}" var="umCartao">
-            ${umCartao.taxaCredito} - <a href="servlet?acao=excluirCartao&id=${umCartao.id}"> Excluir</a> - 
-            <a href="servlet?acao=editarCartao&id=${umCartao.id}">Editar</a>
-            ${umCartao.taxaDebito} - <a href="servlet?acao=excluirCartao&id=${umCartao.id}"> Excluir</a> - 
-            <a href="servlet?acao=editarCartao&id=${umCartao.id}">Editar</a>
+            ${umCartao.taxaCredito} -  ${umCartao.taxaDebito} - <a href="servlet?acao=excluirCartao&id=${umCartao.idCartao}"> Excluir</a> - <a href="servlet?acao=editarCartao&id=${umCartao.idCartao}">Editar</a>       
             <br/>            
         </c:forEach>
             

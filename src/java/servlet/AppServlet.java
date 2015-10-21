@@ -26,46 +26,47 @@ public class AppServlet extends HttpServlet{
             throws ServletException, IOException {
         
         String acao = req.getParameter("acao");
-        if (acao.equals("listar")) {
+        if (acao.equals("listarCartao")) {
             List<Cartao> listaCartoes;
             CartaoDao cartaoDao = new CartaoDao();
-           // listaCartoes = cartaoDao.listarCartoes();
-           // req.setAttribute("listinha", listaCartoes);
+            listaCartoes = cartaoDao.listarCartoes();
+            req.setAttribute("lista", listaCartoes);
             RequestDispatcher rd = req.getRequestDispatcher("listCartao.jsp");
             rd.forward(req, resp);
         }
-        if (acao.equals("excluir")) {
+        if (acao.equals("excluirCartao")) {
             CartaoDao cartaoDao = new CartaoDao();
-            Integer idCartao = Integer.parseInt(req.getParameter(""));
-           // Cartao cartaoParaExcluir = cartaoDao.getCartaoById(idCartao);
-           // cartaoDao.delete(cartaoParaExcluir);
+            Integer idCartao = Integer.parseInt(req.getParameter("id"));
+            Cartao cartaoParaExcluir = cartaoDao.getCartaoById(idCartao);
+            cartaoDao.delete(cartaoParaExcluir);
             
-            RequestDispatcher rd = req.getRequestDispatcher("servlet?acao=listar");
+            RequestDispatcher rd = req.getRequestDispatcher("servlet?acao=listarCartao");
             rd.forward(req, resp);                     
         }
-        if (acao.equals("editar")) {
-            String idAsString = req.getParameter("idCartao");
+        if (acao.equals("editarCartao")) {
+            String idAsString = req.getParameter("id");
             Integer idCartao = Integer.parseInt(idAsString);
-            CartaoDao cartaoDao = new CartaoDao();
-           // Cartao cartaoParaEditar = cartaoDao.getCartaoById(idCartao);
-           // req.setAttribute("cartao", cartaoParaEditar);
-            RequestDispatcher rd = req.getRequestDispatcher("servlet?acao=listar");
+            CartaoDao cartaoDao = new CartaoDao();            
+            Cartao cartaoParaEditar = cartaoDao.getCartaoById(idCartao);
+            req.setAttribute("cartao", cartaoParaEditar);
+            RequestDispatcher rd = req.getRequestDispatcher("editCartao.jsp");
             rd.forward(req, resp);                       
         }
-        if (acao.equals("salvar")) {
+        if (acao.equals("salvarCartao")) {
+            CartaoDao dao = new CartaoDao();
             Cartao cartao = new Cartao();
-            String idAsString = req.getParameter("idCartao");
-            if (!idAsString.equals("null")) {
+            String idAsString = req.getParameter("id");
+            if (!idAsString.isEmpty()) {
                 Integer idCartao = Integer.parseInt(idAsString);
-                cartao.setIdCartao(idCartao);
+                cartao = dao.getCartaoById(idCartao);
             }
-            Float taxaCredito = Float.parseFloat(req.getParameter("taxaCredito"));
-            Float taxaDebito = Float.parseFloat(req.getParameter("taxaDebito"));
+            Float taxaCredito = Float.parseFloat(req.getParameter("txtTaxaCredito"));
+            Float taxaDebito = Float.parseFloat(req.getParameter("txtTaxaDebito"));
             cartao.setTaxaCredito(taxaCredito);
             cartao.setTaxaDebito(taxaDebito);
             CartaoDao cartaoDao = new CartaoDao();
             cartaoDao.salvar(cartao);
-            RequestDispatcher rd = req.getRequestDispatcher("servlet?acao=listar");
+            RequestDispatcher rd = req.getRequestDispatcher("servlet?acao=listarCartao");
             rd.forward(req, resp);                    
         }
         if (acao.equals("novoCartao")) {
@@ -80,7 +81,7 @@ public class AppServlet extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+        doPost(req, resp);
     }
     
     
