@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -20,16 +21,26 @@ public class Cartao implements Serializable {
     
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)    
-    private Integer idCartao;
+    private Integer id;
     private Float taxaDebito;
     private Float taxaCredito;
+    @ManyToOne
+    private Bandeira bandeira;
 
-    public Integer getIdCartao() {
-        return idCartao;
+    public Bandeira getBandeira() {
+        return bandeira;
     }
 
-    public void setIdCartao(Integer idCartao) {
-        this.idCartao = idCartao;
+    public void setBandeira(Bandeira bandeira) {
+        this.bandeira = bandeira;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setIdCartao(Integer id) {
+        this.id = id;
     }
 
     public Float getTaxaDebito() {

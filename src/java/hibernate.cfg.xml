@@ -11,5 +11,7 @@
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.format_sql">true</property>
     <mapping class="entity.Cartao" />
+    <mapping class="entity.Bandeira" />
+    <mapping class="entity.Cliente" />
   </session-factory>
 </hibernate-configuration>
