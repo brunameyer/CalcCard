@@ -20,7 +20,7 @@
             Taxa Crédito: <input type="text" name="txtTaxaCredito" value="${cartao.taxaCredito}"><br />
             Taxa Débito: <input type="text" name="txtTaxaDebito" value="${cartao.taxaDebito}"><br />
             
-            <input type="hidden" name="id" value="${cartao.idCartao}" />
+            <input type="hidden" name="id" value="${cartao.id}" />
             <input type="hidden" name="acao" value="salvarCartao" />
             <input type="submit" value="Submeter" />
 
